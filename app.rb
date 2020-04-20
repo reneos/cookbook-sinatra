@@ -4,6 +4,8 @@ require "pry-byebug"
 require "better_errors"
 require_relative "recipe"
 require_relative "cookbook"
+require_relative "scrape"
+require_relative "parse"
 configure :development do
   use BetterErrors::Middleware
   BetterErrors.application_root = File.expand_path('..', __FILE__)
@@ -11,6 +13,8 @@ end
 
 csv_file = File.join(__dir__, 'recipes.csv')
 cookbook = Cookbook.new(csv_file)
+bbc_search_results = []
+URL = "https://www.bbcgoodfood.com/search/recipes?query="
 
 get '/' do
   @recipes = cookbook.all
@@ -46,6 +50,24 @@ post '/change' do
     delete(checked, cookbook)
   end
   redirect '/'
+end
+
+get '/search_bbc' do
+  @ingredient = params[:ingredient]
+  @recipes = import(URL, @ingredient)
+  bbc_search_results = @recipes
+  erb :results
+end
+
+post '/import_recipe' do
+  checked = params[:checked].map(&:to_i)
+  checked.each { |index| cookbook.add_recipe(bbc_search_results[index]) }
+  redirect '/'
+end
+
+def import(url, ingredient)
+  search_results = Scrape.call(url + ingredient)
+  Parse.call(search_results)
 end
 
 def mark_as_done(checked, cookbook)
