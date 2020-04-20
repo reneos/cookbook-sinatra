@@ -7,10 +7,11 @@ class Cookbook
     @csv_file = csv_file_path
     add_recipes_from_csv
   end
-
+{ col_sep: ',', force_quotes: true, quote_char: '"' }
   def add_recipes_from_csv
+    csv_options = { col_sep: ',', encoding: Encoding::UTF_8, force_quotes: true, quote_char: '"' }
     # Title, descr, prep time, difficulty, done?
-    CSV.foreach(@csv_file) do |row|
+    CSV.foreach(@csv_file, csv_options) do |row|
       @recipes << Recipe.new(row[0], row[1], row[2], row[3], row[4])
     end
   end
@@ -21,10 +22,7 @@ class Cookbook
 
   def add_recipe(recipe)
     @recipes << recipe
-    # append recipe to end of CSV
-    CSV.open(@csv_file, 'a') do |row|
-      row << recipe_to_array(recipe)
-    end
+    rewrite_csv
   end
 
   def recipe_to_array(recipe)
@@ -32,7 +30,8 @@ class Cookbook
   end
 
   def rewrite_csv
-    CSV.open(@csv_file, 'w') do |row|
+    csv_options = { col_sep: ',', encoding: Encoding::UTF_8, force_quotes: true, quote_char: '"' }
+    CSV.open(@csv_file, 'wb', csv_options) do |row|
       @recipes.each do |recipe|
         row << recipe_to_array(recipe)
       end
