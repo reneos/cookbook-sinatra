@@ -22,3 +22,14 @@ end
 get '/add' do
   erb :add
 end
+
+post '/recipes' do
+  recipe = Recipe.new(params[:name], params[:description], params[:prep_time].to_i, params[:difficulty])
+  cookbook.add_recipe(recipe)
+  redirect "/"
+end
+
+get '/delete/:index' do
+  cookbook.remove_recipe(params[:index].to_i)
+  redirect "/"
+end

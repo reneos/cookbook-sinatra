@@ -4,14 +4,19 @@
   </div>
 </div>
 <div class="row">
-  <div class="col"
+  <div class="col">
     <ul class="list-group">
-      <% @recipes.each do |recipe| %>
-      <li class="list-group-item">
-        <%= recipe.name %>
-        <span class="badge badge-primary badge-pill"><%= recipe.difficulty %></span>
-        <span class="badge badge-primary badge-pill"><%= recipe.prep_time %></span>
-      </li>
+      <% if @recipes.empty? %>
+        <li class="list-group-item">No recipes saved.</li>
+      <% else %>
+        <% @recipes.each_with_index do |recipe, index| %>
+        <li class="list-group-item d-flex align-items-center">
+          <%= recipe.name %>
+          <span class="badge badge-primary badge-pill"><%= recipe.difficulty %></span>
+          <span class="badge badge-primary badge-pill"><%= recipe.prep_time %> mins</span>
+          <a href="/delete/<%= index %>" class="ml-auto btn btn-primary">Delete</a>
+        </li>
+        <% end %>
       <% end %>
     </ul>
   </div>
