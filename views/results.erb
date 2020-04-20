@@ -27,9 +27,9 @@
       </ul>
     </div>
   </div>
-  <div class="row text-center">
+  <div class="row mb-5">
     <div class="col">
-      <button type="submit" class="btn btn-primary">Add selected recipes</button>
+      <button type="submit" class="btn btn-primary mt-2"<%=" disabled" if @recipes.empty? %>>Add selected recipes</button>
     </div>
   </div>
 </form>

@@ -16,7 +16,7 @@
               <input class="checkbox" type="checkbox" name="checked[]" value="<%= index %>" id="<%= index %>">
               <a href="/recipe/<%= index %>"><%= recipe.name %></a>
               <span class="ml-auto badge badge-primary badge-pill <%= recipe.difficulty.downcase %>"><%= recipe.difficulty %></span>
-              <span class="badge badge-primary badge-pill"><%= recipe.prep_time %> mins</span>
+              <span class="badge badge-primary badge-pill"><%= recipe.prep_time %></span>
               <span class="badge badge-primary badge-pill"><%= recipe.done? ? "Done!" : "Not done" %></span>
           </li>
           </label>
@@ -25,19 +25,25 @@
       </ul>
     </div>
   </div>
-  <div class="row text-center">
-    <div class="col">
-      <button type="submit" name="action" value="mark" class="btn btn-primary">Mark as done</button>
-      <button type="submit" name="action" value="delete" class="btn btn-outline-danger">Delete</button>
-      <a href="/add" class="btn btn-primary">Add a new recipe</a>
+  <div class="row">
+    <div class="col d-flex mt-2">
+      <button type="submit" name="action" value="mark" class="mr-1 btn btn-primary">Mark as done</button>
+      <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
+      <a href="/add" class="btn btn-primary ml-auto">Add a new recipe</a>
     </div>
   </div>
+
 </form>
+
+<div class="row mt-5">
+  <div class="col">
+    <h1>Search BBC recipes for ingredient</h1>
+  </div>
+</div>
 <form action="/search_bbc">
   <div class="form-group">
-    <label for="ingredient">Ingredient</label>
     <input type="text" name="ingredient" class="form-control" id="ingredient">
-    <button type="submit" class="btn btn-outline-danger">Get BBC Recipes</button>
+    <button type="submit" class="btn btn-primary mt-2">Get BBC Recipes</button>
   </div>
 
 </form>

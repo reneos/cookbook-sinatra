@@ -2,6 +2,7 @@ require_relative 'recipe'
 require 'csv'
 
 class Cookbook
+  CSV_OPTIONS = { col_sep: ',', encoding: 'UTF-8', force_quotes: true, quote_char: '"' }
   def initialize(csv_file_path)
     @recipes = []
     @csv_file = csv_file_path
@@ -9,9 +10,8 @@ class Cookbook
   end
 
   def add_recipes_from_csv
-    csv_options = { col_sep: ',', encoding: 'ISO-8859-1', force_quotes: true, quote_char: '"' }
     # Title, descr, prep time, difficulty, done?
-    CSV.foreach(@csv_file, csv_options) do |row|
+    CSV.foreach(@csv_file, CSV_OPTIONS) do |row|
       done = row[4] == "true"
       @recipes << Recipe.new(row[0], row[1], row[2], row[3], done)
     end
@@ -31,8 +31,7 @@ class Cookbook
   end
 
   def rewrite_csv
-    csv_options = { col_sep: ',', encoding: 'ISO-8859-1', force_quotes: true, quote_char: '"' }
-    CSV.open(@csv_file, 'w', csv_options) do |row|
+    CSV.open(@csv_file, 'wb', CSV_OPTIONS) do |row|
       @recipes.each do |recipe|
         row << recipe_to_array(recipe)
       end

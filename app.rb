@@ -26,7 +26,7 @@ get '/add' do
 end
 
 post '/recipes' do
-  recipe = Recipe.new(params[:name], params[:description].encode(universal_newline: true), params[:prep_time].to_i, params[:difficulty])
+  recipe = Recipe.new(params[:name], params[:description].encode(universal_newline: true), params[:prep_time] + " mins", params[:difficulty])
   cookbook.add_recipe(recipe)
   redirect "/"
 end
@@ -43,10 +43,10 @@ get '/recipe/:index' do
 end
 
 post '/change' do
-  checked = params[:checked].map(&:to_i)
-  if !checked.empty? && params[:action] == "mark"
+  checked = params[:checked]
+  if checked && params[:action] == "mark"
     mark_as_done(checked, cookbook)
-  elsif !checked.empty? && params[:action] == "delete"
+  elsif checked && params[:action] == "delete"
     delete(checked, cookbook)
   end
   redirect '/'
@@ -60,8 +60,10 @@ get '/search_bbc' do
 end
 
 post '/import_recipe' do
-  checked = params[:checked].map(&:to_i)
-  checked.each { |index| cookbook.add_recipe(bbc_search_results[index]) }
+  checked = params[:checked]
+  if checked
+    checked.each { |index| cookbook.add_recipe(bbc_search_results[index.to_i]) }
+  end
   redirect '/'
 end
 
@@ -72,10 +74,11 @@ end
 
 def mark_as_done(checked, cookbook)
   checked.each do |index|
-    cookbook.mark_done(index)
+    cookbook.mark_done(index.to_i)
   end
 end
 
 def delete(checked, cookbook)
+  checked = checked.map(&:to_i)
   cookbook.remove_recipes(checked)
 end
