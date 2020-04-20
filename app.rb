@@ -2,8 +2,6 @@ require "sinatra"
 require "sinatra/reloader" if development?
 require "pry-byebug"
 require "better_errors"
-require_relative 'parse'
-require_relative 'scrape'
 require_relative "recipe"
 require_relative "cookbook"
 configure :development do
@@ -15,6 +13,12 @@ csv_file = File.join(__dir__, 'recipes.csv')
 cookbook = Cookbook.new(csv_file)
 
 get '/' do
+  # List all recipes
+  # Link to page to add new recipe
   @recipes = cookbook.all
   erb :index
+end
+
+get '/add' do
+  erb :add
 end

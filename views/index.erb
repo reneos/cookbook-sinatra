@@ -1,12 +1,23 @@
 <div class="row">
-  <h1>Recipe list</h1>
+  <div class="col">
+    <h1>Recipe list</h1>
+  </div>
 </div>
 <div class="row">
-  <ul>
-    <% @recipes.each do |recipe| %>
-    <li>
-      <%= recipe.name %>
-    </li>
-    <% end %>
-  </ul>
+  <div class="col"
+    <ul class="list-group">
+      <% @recipes.each do |recipe| %>
+      <li class="list-group-item">
+        <%= recipe.name %>
+        <span class="badge badge-primary badge-pill"><%= recipe.difficulty %></span>
+        <span class="badge badge-primary badge-pill"><%= recipe.prep_time %></span>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<div class="row text-center">
+  <div class="col">
+    <a href="/add" class="btn btn-primary">Add a new recipe</a>
+  </div>
 </div>
