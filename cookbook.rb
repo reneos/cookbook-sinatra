@@ -7,12 +7,13 @@ class Cookbook
     @csv_file = csv_file_path
     add_recipes_from_csv
   end
-{ col_sep: ',', force_quotes: true, quote_char: '"' }
+
   def add_recipes_from_csv
-    csv_options = { col_sep: ',', encoding: Encoding::UTF_8, force_quotes: true, quote_char: '"' }
+    csv_options = { col_sep: ',', encoding: 'ISO-8859-1', force_quotes: true, quote_char: '"' }
     # Title, descr, prep time, difficulty, done?
     CSV.foreach(@csv_file, csv_options) do |row|
-      @recipes << Recipe.new(row[0], row[1], row[2], row[3], row[4])
+      done = row[4] == "true"
+      @recipes << Recipe.new(row[0], row[1], row[2], row[3], done)
     end
   end
 
@@ -30,16 +31,17 @@ class Cookbook
   end
 
   def rewrite_csv
-    csv_options = { col_sep: ',', encoding: Encoding::UTF_8, force_quotes: true, quote_char: '"' }
-    CSV.open(@csv_file, 'wb', csv_options) do |row|
+    csv_options = { col_sep: ',', encoding: 'ISO-8859-1', force_quotes: true, quote_char: '"' }
+    CSV.open(@csv_file, 'w', csv_options) do |row|
       @recipes.each do |recipe|
         row << recipe_to_array(recipe)
       end
     end
   end
 
-  def remove_recipe(recipe_index)
-    @recipes.delete_at(recipe_index)
+  def remove_recipes(indices)
+    # Takes an array of indices
+    @recipes.delete_if.with_index { |_recipe, index| indices.include?(index) }
     rewrite_csv
   end
 

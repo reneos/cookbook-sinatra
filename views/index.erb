@@ -3,6 +3,7 @@
     <h1>Recipe list</h1>
   </div>
 </div>
+<form action="/change" method="POST">
 <div class="row">
   <div class="col">
     <ul class="list-group">
@@ -10,12 +11,16 @@
         <li class="list-group-item">No recipes saved.</li>
       <% else %>
         <% @recipes.each_with_index do |recipe, index| %>
+        <label for="<%= index %>">
         <li class="list-group-item d-flex align-items-center">
-          <%= recipe.name %>
-          <span class="badge badge-primary badge-pill"><%= recipe.difficulty %></span>
-          <span class="badge badge-primary badge-pill"><%= recipe.prep_time %> mins</span>
-          <a href="/delete/<%= index %>" class="ml-auto btn btn-outline-danger">Delete</a>
+            <input class="checkbox" type="checkbox" name="checked[]" value="<%= index %>" id="<%= index %>">
+            <a href="/recipe/<%= index %>"><%= recipe.name %></a>
+            <span class="ml-auto badge badge-primary badge-pill <%= recipe.difficulty.downcase %>"><%= recipe.difficulty %></span>
+            <span class="badge badge-primary badge-pill"><%= recipe.prep_time %> mins</span>
+            <span class="badge badge-primary badge-pill"><%= recipe.done? ? "Done!" : "Not done" %></span>
+            <!-- <a href="/delete/<%= index %>" class="btn btn-outline-danger">Delete</a> -->
         </li>
+        </label>
         <% end %>
       <% end %>
     </ul>
@@ -23,6 +28,9 @@
 </div>
 <div class="row text-center">
   <div class="col">
+    <button type="submit" name="action" value="mark" class="btn btn-primary">Mark as done</button>
+    <button type="submit" name="action" value="delete" class="btn btn-outline-danger">Delete</button>
     <a href="/add" class="btn btn-primary">Add a new recipe</a>
   </div>
 </div>
+</form>

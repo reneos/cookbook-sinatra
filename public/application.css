@@ -1,0 +1,23 @@
+body {
+  margin-top: 50px;
+}
+
+.easy {
+  background-color: green ;
+}
+
+.medium {
+  background-color: orange;
+}
+
+.hard {
+  background-color: red;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.badge {
+  margin: 0 5px 0 0;
+}

@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col">
+    <h1><%= @recipe.name %></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-8">
+    <% @recipe.description.split("\n").each do |step| %>
+      <p class="step"><%= step %></p>
+    <% end %>
+  </div>
+  <div class="col-4">
+    <div><em>Difficulty</em>: <%= @recipe.difficulty %></div>
+    <div><em>Prep time</em>: <%= @recipe.prep_time %></div>
+  </div>
+</div>
